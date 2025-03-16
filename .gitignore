@@ -23,7 +23,11 @@ go.work.sum
 
 # env file
 .env
+
+*.log
+*.lst
+*.json
+
 /.idea
-/*.json
-/*.log
 /gcp-iam-fuzz
+/.data

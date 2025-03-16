@@ -16,7 +16,6 @@ var (
 )
 
 func EnumPerms(ctx context.Context, token, project string, task *Task) {
-  var valid []string
 
   log := zerolog.Ctx(ctx).With().Str("project", project).Logger()
   url := fmt.Sprintf("https://cloudresourcemanager.googleapis.com/v1/projects/%s:testIamPermissions", project)
@@ -113,10 +112,9 @@ func EnumPerms(ctx context.Context, token, project string, task *Task) {
                 newValid := tryPerms[0:i]
 
                 if len(newValid) != 0 {
-                  valid = append(valid, newValid...)
                   log.Debug().Strs("permissions", newValid).Msg("Valid permission(s) detected")
                 }
-                tryPerms = tryPerms[i+1:]
+                tryPerms = append(newValid, tryPerms[i+1:]...)
               }
             }
           } else {

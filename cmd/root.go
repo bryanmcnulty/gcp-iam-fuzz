@@ -5,8 +5,8 @@ import (
   "encoding/json"
   "errors"
   "fmt"
-  "gcp-iam-fuzz/pkg/data"
-  "gcp-iam-fuzz/pkg/iamfuzz"
+  "github.com/bryanmcnulty/gcp-iam-fuzz/pkg/data"
+  "github.com/bryanmcnulty/gcp-iam-fuzz/pkg/iamfuzz"
   "github.com/rs/zerolog"
   "github.com/spf13/cobra"
   "os"
@@ -64,7 +64,9 @@ var rootCmd = &cobra.Command{
       log = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr}).With().Timestamp().Logger()
     }
 
-    groupSize := len(data.AllPerms) / argTasks
+    permsSize := len(data.AllPerms)
+    groupSize := permsSize / argTasks
+
     groups := make([]*iamfuzz.Task, argTasks)
     out := make(chan string)
     errc := make(chan error, argTasks)
@@ -90,9 +92,16 @@ var rootCmd = &cobra.Command{
       }
     }()
 
+    var chunk []string
+
     for i := range argTasks {
+      if i == argTasks-1 {
+        chunk = data.AllPerms[i*groupSize:]
+      } else {
+        chunk = data.AllPerms[i*groupSize : (i*groupSize)+groupSize]
+      }
       groups[i] = &iamfuzz.Task{
-        In:  data.AllPerms[i*groupSize : (i*groupSize)+groupSize],
+        In:  chunk,
         Out: out,
         Err: errc,
       }
