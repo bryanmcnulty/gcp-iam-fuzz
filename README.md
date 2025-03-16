@@ -34,7 +34,7 @@ export GCP_ACCESS_TOKEN=$(gcloud auth print-access-token)
 ```
 
 > [!WARNING]
-> For security purposes, it is recommended to provide the access token via the GCP_ACCESS_TOKEN environment variable.
+> For security purposes, it is recommended to provide the access token via the `GCP_ACCESS_TOKEN` environment variable.
 
 ## Disclaimer
 

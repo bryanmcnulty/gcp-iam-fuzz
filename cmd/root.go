@@ -26,6 +26,11 @@ var (
 var rootCmd = &cobra.Command{
   Use:   "gcp-iam-fuzz",
   Short: "Quickly enumerate IAM permissions for a GCP account",
+  Long: `gcp-iam-fuzz is a tool to quickly enumerate IAM permissions for a GCP account
+
+Author: Bryan McNulty (@bryanmcnulty)
+Source: https://github.com/bryanmcnulty/gcp-iam-fuzz
+`,
 
   Args: func(cmd *cobra.Command, args []string) error {
     if argTasks < 0 || argTasks > 100 {
