@@ -14,10 +14,10 @@ import (
 )
 
 var (
+  argTasks   int = 6
   argDebug   bool
   argJson    bool
   argLogJson bool
-  argTasks   int
   argProject string
   argToken   string
   argOutput  string
@@ -133,13 +133,13 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-  rootCmd.Flags().BoolVarP(&argDebug, "debug", "d", false, "Enable debug logging")
-  rootCmd.Flags().BoolVarP(&argJson, "json", "j", false, "Enable JSON output")
-  rootCmd.Flags().BoolVarP(&argLogJson, "log-json", "l", false, "Log messages in JSON format")
-  rootCmd.Flags().IntVarP(&argTasks, "threads", "T", 6, "Number of concurrent threads")
-  rootCmd.Flags().StringVarP(&argProject, "project", "p", "", "GCP project name")
-  rootCmd.Flags().StringVarP(&argToken, "token", "t", "", "GCP access token. environment variable GCP_ACCESS_TOKEN may also be used")
-  rootCmd.Flags().StringVarP(&argOutput, "output", "o", "", "Output file path")
+  rootCmd.Flags().BoolVarP(&argDebug, "debug", "d", argDebug, "Enable debug logging")
+  rootCmd.Flags().BoolVarP(&argJson, "json", "j", argJson, "Enable JSON output")
+  rootCmd.Flags().BoolVarP(&argLogJson, "log-json", "l", argLogJson, "Log messages in JSON format")
+  rootCmd.Flags().IntVarP(&argTasks, "threads", "T", argTasks, "Number of concurrent threads")
+  rootCmd.Flags().StringVarP(&argProject, "project", "p", argProject, "GCP project name")
+  rootCmd.Flags().StringVarP(&argToken, "token", "t", argToken, "GCP access token. environment variable GCP_ACCESS_TOKEN may also be used")
+  rootCmd.Flags().StringVarP(&argOutput, "output", "o", argOutput, "Output file path")
 
   if err := rootCmd.MarkFlagRequired("project"); err != nil {
     panic(err)

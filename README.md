@@ -1,6 +1,6 @@
 # gcp-iam-fuzz
 
-**`gcp-iam-fuzz`** is a tool to quickly enumerate IAM permissions for a Google Cloud Platform (GCP) account using the `testIamPermissions` feature.
+**`gcp-iam-fuzz`** is a tool to quickly enumerate IAM permissions for a Google Cloud Platform (GCP) account using the `testIamPermissions` feature. This is especially useful for when the account cannot directly fetch IAM permissions.
 
 ## How it Works
 
@@ -19,14 +19,18 @@ Flags:
   -l, --log-json         Log messages in JSON format
   -o, --output string    Output file path
   -p, --project string   GCP project name
-  -T, --threads int      Number of concurrent threads (default 10)
-  -t, --token string     GCP access token
+  -T, --threads int      Number of concurrent threads (default 6)
+  -t, --token string     GCP access token. environment variable GCP_ACCESS_TOKEN may also be used
 ```
 
-To use `gcp-iam-fuzz`, you first need an access token. You can get one from an authenticated [`gcloud`](https://cloud.google.com/sdk/docs/install#linux) session like so:
+To use `gcp-iam-fuzz`, you first need an access token. You can use one from an authenticated [`gcloud`](https://cloud.google.com/sdk/docs/install#linux) session on Linux like so:
 
 ```shell
-gcloud auth print-access-token
+# Get access token
+export GCP_ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+# Fuzz IAM permissions
+./gcp-iam-fuzz -p "replace-with-project-id"
 ```
 
 > [!WARNING]
