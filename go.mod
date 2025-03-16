@@ -1,6 +1,6 @@
 module github.com/bryanmcnulty/gcp-iam-fuzz
 
-go 1.24
+go 1.22.2
 
 require (
 	github.com/rs/zerolog v1.33.0

@@ -27,6 +27,7 @@ go.work.sum
 *.log
 *.lst
 *.json
+*.bak
 
 /.idea
 /gcp-iam-fuzz
