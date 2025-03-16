@@ -32,9 +32,12 @@ var rootCmd = &cobra.Command{
       return errors.New("tasks must be between 1 and 100")
     }
     if argProject == "" {
-      return errors.New("project ID is required")
-    } else if argToken == "" {
-      return errors.New("GCP access token is required")
+      return errors.New("project ID (-p / --project) is required")
+    }
+    if argToken == "" {
+      if argToken = os.Getenv("GCP_ACCESS_TOKEN"); argToken == "" {
+        return errors.New("access token (-t / --token / GCP_ACCESS_TOKEN) is required")
+      }
     }
     return cobra.NoArgs(cmd, args)
   },
@@ -118,7 +121,7 @@ var rootCmd = &cobra.Command{
       var content []byte
 
       if content, err = json.MarshalIndent(map[string][]string{"permissions": results}, "", "  "); err != nil {
-        log.Error().Msg("Failed to write output as JSON")
+        log.Error().Msg("Failed to serialize output to JSON")
         content = []byte("{}\n")
       }
       if _, err = of.Write(content); err != nil {
@@ -133,10 +136,14 @@ func init() {
   rootCmd.Flags().BoolVarP(&argDebug, "debug", "d", false, "Enable debug logging")
   rootCmd.Flags().BoolVarP(&argJson, "json", "j", false, "Enable JSON output")
   rootCmd.Flags().BoolVarP(&argLogJson, "log-json", "l", false, "Log messages in JSON format")
-  rootCmd.Flags().IntVarP(&argTasks, "threads", "T", 10, "Number of concurrent threads")
+  rootCmd.Flags().IntVarP(&argTasks, "threads", "T", 6, "Number of concurrent threads")
   rootCmd.Flags().StringVarP(&argProject, "project", "p", "", "GCP project name")
-  rootCmd.Flags().StringVarP(&argToken, "token", "t", "", "GCP access token")
+  rootCmd.Flags().StringVarP(&argToken, "token", "t", "", "GCP access token. environment variable GCP_ACCESS_TOKEN may also be used")
   rootCmd.Flags().StringVarP(&argOutput, "output", "o", "", "Output file path")
+
+  if err := rootCmd.MarkFlagRequired("project"); err != nil {
+    panic(err)
+  }
 }
 
 func Execute() {
